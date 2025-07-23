@@ -23,10 +23,17 @@ let EventsService = class EventsService {
         this.userModel = userModel;
     }
     async create(createEventDto) {
+        if (!createEventDto.organizer) {
+            throw new common_1.ForbiddenException('Organizer is required');
+        }
+        const organizer = await this.userModel.findById(createEventDto.organizer).exec();
+        if (!organizer) {
+            throw new common_1.NotFoundException(`Organizer with ID ${createEventDto.organizer} not found`);
+        }
         const createdEvent = new this.eventModel({
             ...createEventDto,
             blockchain: {
-                network: "sui:devnet",
+                network: 'sui:devnet',
             },
         });
         const savedEvent = await createdEvent.save();

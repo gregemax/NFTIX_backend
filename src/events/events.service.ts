@@ -14,23 +14,34 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
-    const createdEvent = new this.eventModel({
-      ...createEventDto,
-      blockchain: {
-        network: "sui:devnet",
-      },
-    })
-
-    const savedEvent = await createdEvent.save()
-
-    // Link event to the user's createdEvents
-    await this.userModel.findByIdAndUpdate(savedEvent.organizer, {
-      $push: { createdEvents: savedEvent._id },
-    })
-
-    return savedEvent
+  // Validate if the organizer is provided and exists
+  if (!createEventDto.organizer) {
+    throw new ForbiddenException('Organizer is required');
   }
 
+  // Check if the user exists
+  const organizer = await this.userModel.findById(createEventDto.organizer).exec();
+  if (!organizer) {
+    throw new NotFoundException(`Organizer with ID ${createEventDto.organizer} not found`);
+  }
+
+  // Create the event
+  const createdEvent = new this.eventModel({
+    ...createEventDto,
+    blockchain: {
+      network: 'sui:devnet',
+    },
+  });
+
+  const savedEvent = await createdEvent.save();
+
+  // Link the event to the organizer's createdEvents
+  await this.userModel.findByIdAndUpdate(savedEvent.organizer, {
+    $push: { createdEvents: savedEvent._id },
+  });
+
+  return savedEvent;
+}
   async findAll(filters?: {
     category?: string
     status?: EventStatus
