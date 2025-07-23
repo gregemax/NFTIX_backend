@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
-const event_schema_1 = require("./schemas/event.schema");
 const mongoose_2 = require("@nestjs/mongoose");
+const event_schema_1 = require("./schemas/event.schema");
 let EventsService = class EventsService {
-    constructor(eventModel) {
+    constructor(eventModel, userModel) {
         this.eventModel = eventModel;
+        this.userModel = userModel;
     }
     async create(createEventDto) {
         const createdEvent = new this.eventModel({
@@ -28,7 +29,11 @@ let EventsService = class EventsService {
                 network: "sui:devnet",
             },
         });
-        return createdEvent.save();
+        const savedEvent = await createdEvent.save();
+        await this.userModel.findByIdAndUpdate(savedEvent.organizer, {
+            $push: { createdEvents: savedEvent._id },
+        });
+        return savedEvent;
     }
     async findAll(filters) {
         const query = {};
@@ -66,11 +71,10 @@ let EventsService = class EventsService {
         if (event.organizer.toString() !== userId) {
             throw new common_1.ForbiddenException("Only the event organizer can update this event");
         }
-        const updatedEvent = await this.eventModel
+        return this.eventModel
             .findByIdAndUpdate(id, updateEventDto, { new: true })
             .populate("organizer", "username walletAddress isVerified")
             .exec();
-        return updatedEvent;
     }
     async remove(id, userId) {
         const event = await this.eventModel.findById(id);
@@ -81,6 +85,9 @@ let EventsService = class EventsService {
             throw new common_1.ForbiddenException("Only the event organizer can delete this event");
         }
         await this.eventModel.findByIdAndDelete(id).exec();
+        await this.userModel.findByIdAndUpdate(userId, {
+            $pull: { createdEvents: id },
+        });
     }
     async searchEvents(query) {
         return this.eventModel
@@ -124,7 +131,13 @@ let EventsService = class EventsService {
         if (!event) {
             throw new common_1.NotFoundException(`Event with ID ${eventId} not found`);
         }
+        const tierIndex = event.ticketTiers.findIndex((tier) => tier._id.toString() === tierId);
+        if (tierIndex === -1) {
+            throw new common_1.NotFoundException(`Ticket tier with ID ${tierId} not found`);
+        }
+        event.ticketTiers[tierIndex].sold += quantity;
         event.totalAttendees += quantity;
+        event.totalRevenue += event.ticketTiers[tierIndex].price * quantity;
         return event.save();
     }
 };
@@ -132,6 +145,8 @@ exports.EventsService = EventsService;
 exports.EventsService = EventsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)('Event')),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __param(1, (0, mongoose_2.InjectModel)('User')),
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        mongoose_1.Model])
 ], EventsService);
 //# sourceMappingURL=events.service.js.map

@@ -1,7 +1,8 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
-import { type Document, Types } from "mongoose"
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { type Document, Types } from "mongoose";
+import { User } from '../../users/schemas/user.schema'; // Import User schema
 
-export type EventDocument = Event & Document
+export type EventDocument = Event & Document;
 
 export enum EventStatus {
   DRAFT = "draft",
@@ -22,93 +23,98 @@ export enum EventCategory {
 @Schema({ timestamps: true })
 export class TicketTier {
   @Prop({ required: true })
-  name: string
+  name: string;
 
   @Prop({ required: true })
-  price: number // Price in SUI
+  price: number; // Price in SUI
 
   @Prop()
-  description: string
+  description: string;
 
   @Prop({ required: true })
-  totalSupply: number
+  totalSupply: number;
 
   @Prop({ default: 0 })
-  sold: number
+  sold: number;
 
   @Prop({ type: [String], default: [] })
-  benefits: string[]
+  benefits: string[];
 
   @Prop({ default: true })
-  isActive: boolean
+  isActive: boolean;
+
+  // Add _id property explicitly if necessary
+  @Prop({ type: Types.ObjectId })
+  _id?: Types.ObjectId;
 }
 
 @Schema({ timestamps: true })
 export class Event {
   @Prop({ required: true })
-  title: string
+  title: string;
 
   @Prop({ required: true })
-  description: string
+  description: string;
 
   @Prop()
-  longDescription: string
+  longDescription: string;
 
   @Prop({ required: true, enum: EventCategory })
-  category: EventCategory
+  category: EventCategory;
 
   @Prop({ type: [String], default: [] })
-  tags: string[]
+  tags: string[];
 
   @Prop({ required: true })
-  startDate: Date
+  startDate: Date;
 
   @Prop()
-  endDate: Date
+  endDate: Date;
 
   @Prop({ required: true })
-  location: string
+  location: string;
 
   @Prop()
-  venue: string
+  venue: string;
 
   @Prop()
-  imageUrl: string
+  imageUrl: string;
 
   @Prop({ type: Types.ObjectId, ref: "User", required: true })
-  organizer: Types.ObjectId
+  organizer: Types.ObjectId; // Organizer reference
 
   @Prop({ type: [TicketTier], default: [] })
-  ticketTiers: TicketTier[]
+  ticketTiers: TicketTier[];
 
   @Prop({ enum: EventStatus, default: EventStatus.DRAFT })
-  status: EventStatus
+  status: EventStatus;
 
   @Prop({ default: 0 })
-  totalAttendees: number
+  totalAttendees: number;
 
   @Prop()
-  maxAttendees: number
+  maxAttendees: number;
 
   @Prop({ default: 0 })
-  totalRevenue: number
+  totalRevenue: number;
 
   @Prop({ type: Object })
   blockchain: {
-    contractAddress?: string
-    network: string
-    deploymentTx?: string
-  }
+    contractAddress?: string;
+    network: string;
+    deploymentTx?: string;
+  };
 
   @Prop({ default: false })
-  isFeatured: boolean
+  isFeatured: boolean;
 
   @Prop({ default: 0 })
-  viewCount: number
+  viewCount: number;
 
+  // Only declare 'attendees' once here
   @Prop({ type: [Types.ObjectId], ref: "User", default: [] })
-  attendees: Types.ObjectId[]
+  attendees: Types.ObjectId[]; // Attendees reference
 }
 
-export const EventSchema = SchemaFactory.createForClass(Event)
-export const TicketTierSchema = SchemaFactory.createForClass(TicketTier)
+export const EventSchema = SchemaFactory.createForClass(Event);
+export const TicketTierSchema = SchemaFactory.createForClass(TicketTier);

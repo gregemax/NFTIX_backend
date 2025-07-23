@@ -2,9 +2,11 @@ import { Model } from "mongoose";
 import { Event, EventDocument, EventStatus } from "./schemas/event.schema";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { UserDocument } from "../users/schemas/user.schema";
 export declare class EventsService {
     private readonly eventModel;
-    constructor(eventModel: Model<EventDocument>);
+    private readonly userModel;
+    constructor(eventModel: Model<EventDocument>, userModel: Model<UserDocument>);
     create(createEventDto: CreateEventDto): Promise<Event>;
     findAll(filters?: {
         category?: string;

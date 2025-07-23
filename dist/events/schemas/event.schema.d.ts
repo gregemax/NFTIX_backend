@@ -22,6 +22,7 @@ export declare class TicketTier {
     sold: number;
     benefits: string[];
     isActive: boolean;
+    _id?: Types.ObjectId;
 }
 export declare class Event {
     title: string;
@@ -58,12 +59,12 @@ export declare const EventSchema: import("mongoose").Schema<Event, import("mongo
 } & {
     __v: number;
 }>;
-export declare const TicketTierSchema: import("mongoose").Schema<TicketTier, import("mongoose").Model<TicketTier, any, any, any, Document<unknown, any, TicketTier, any> & TicketTier & {
+export declare const TicketTierSchema: import("mongoose").Schema<TicketTier, import("mongoose").Model<TicketTier, any, any, any, Document<unknown, any, TicketTier, any> & TicketTier & Required<{
     _id: Types.ObjectId;
-} & {
+}> & {
     __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, TicketTier, Document<unknown, {}, import("mongoose").FlatRecord<TicketTier>, {}> & import("mongoose").FlatRecord<TicketTier> & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, TicketTier, Document<unknown, {}, import("mongoose").FlatRecord<TicketTier>, {}> & import("mongoose").FlatRecord<TicketTier> & Required<{
     _id: Types.ObjectId;
-} & {
+}> & {
     __v: number;
 }>;

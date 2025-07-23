@@ -59,6 +59,10 @@ __decorate([
     (0, mongoose_1.Prop)({ default: true }),
     __metadata("design:type", Boolean)
 ], TicketTier.prototype, "isActive", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], TicketTier.prototype, "_id", void 0);
 exports.TicketTier = TicketTier = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], TicketTier);

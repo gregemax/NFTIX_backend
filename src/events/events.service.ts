@@ -1,15 +1,17 @@
 import { Injectable, NotFoundException, ForbiddenException } from "@nestjs/common"
-import  { Model } from "mongoose"
-import {  Event,  EventDocument, EventStatus } from "./schemas/event.schema"
-import  { CreateEventDto } from "./dto/create-event.dto"
-import  { UpdateEventDto } from "./dto/update-event.dto"
+import { Model } from "mongoose"
 import { InjectModel } from "@nestjs/mongoose"
+import { Event, EventDocument, EventStatus } from "./schemas/event.schema"
+import { CreateEventDto } from "./dto/create-event.dto"
+import { UpdateEventDto } from "./dto/update-event.dto"
+import { User, UserDocument } from "../users/schemas/user.schema"
 
 @Injectable()
 export class EventsService {
-constructor(
-  @InjectModel('Event') private readonly eventModel: Model<EventDocument>,
-) {}
+  constructor(
+    @InjectModel('Event') private readonly eventModel: Model<EventDocument>,
+    @InjectModel('User') private readonly userModel: Model<UserDocument>,
+  ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
     const createdEvent = new this.eventModel({
@@ -18,7 +20,15 @@ constructor(
         network: "sui:devnet",
       },
     })
-    return createdEvent.save()
+
+    const savedEvent = await createdEvent.save()
+
+    // Link event to the user's createdEvents
+    await this.userModel.findByIdAndUpdate(savedEvent.organizer, {
+      $push: { createdEvents: savedEvent._id },
+    })
+
+    return savedEvent
   }
 
   async findAll(filters?: {
@@ -65,17 +75,14 @@ constructor(
       throw new NotFoundException(`Event with ID ${id} not found`)
     }
 
-    // Check if user is the organizer
     if (event.organizer.toString() !== userId) {
       throw new ForbiddenException("Only the event organizer can update this event")
     }
 
-    const updatedEvent = await this.eventModel
+    return this.eventModel
       .findByIdAndUpdate(id, updateEventDto, { new: true })
       .populate("organizer", "username walletAddress isVerified")
       .exec()
-
-    return updatedEvent
   }
 
   async remove(id: string, userId: string): Promise<void> {
@@ -85,12 +92,16 @@ constructor(
       throw new NotFoundException(`Event with ID ${id} not found`)
     }
 
-    // Check if user is the organizer
     if (event.organizer.toString() !== userId) {
       throw new ForbiddenException("Only the event organizer can delete this event")
     }
 
     await this.eventModel.findByIdAndDelete(id).exec()
+
+    // Also remove the reference from the user's createdEvents
+    await this.userModel.findByIdAndUpdate(userId, {
+      $pull: { createdEvents: id },
+    })
   }
 
   async searchEvents(query: string): Promise<Event[]> {
@@ -141,18 +152,18 @@ constructor(
       throw new NotFoundException(`Event with ID ${eventId} not found`)
     }
 
-    //const tierIndex = event.ticketTiers.findIndex((tier) => tier._id.toString() === tierId)
+    const tierIndex = event.ticketTiers.findIndex((tier) => tier._id.toString() === tierId)
 
-    // if (tierIndex === -1) {
-    //   throw new NotFoundException(`Ticket tier with ID ${tierId} not found`)
-    // }
+    if (tierIndex === -1) {
+      throw new NotFoundException(`Ticket tier with ID ${tierId} not found`)
+    }
 
     // Update ticket tier sold count
-    //event.ticketTiers[tierIndex].sold += quantity
+    event.ticketTiers[tierIndex].sold += quantity
 
     // Update total attendees and revenue
     event.totalAttendees += quantity
-   // event.totalRevenue += event.ticketTiers[tierIndex].price * quantity
+    event.totalRevenue += event.ticketTiers[tierIndex].price * quantity
 
     return event.save()
   }
