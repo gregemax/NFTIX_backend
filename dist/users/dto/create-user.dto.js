@@ -16,30 +16,30 @@ class CreateUserDto {
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: "Wallet address" }),
+    (0, swagger_1.ApiProperty)({ description: "Wallet address", example: "0x1234abcd5678efgh..." }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "walletAddress", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: "User email" }),
+    (0, swagger_1.ApiPropertyOptional)({ description: "User email", example: "user@example.com" }),
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: "Username" }),
+    (0, swagger_1.ApiPropertyOptional)({ description: "Username", example: "cool_username" }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "username", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: "Avatar URL" }),
+    (0, swagger_1.ApiPropertyOptional)({ description: "Avatar image URL", example: "https://cdn.example.com/avatar.jpg" }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "avatar", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: "Is event organizer" }),
+    (0, swagger_1.ApiPropertyOptional)({ description: "Is the user an event organizer?", example: false }),
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)

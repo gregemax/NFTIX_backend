@@ -13,9 +13,9 @@ async function bootstrap() {
         transform: true,
     }));
     app.enableCors({
-        origin: ["http://localhost:3000", "http://localhost:3001"],
+        origin: "*",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-        credentials: true,
+        credentials: false,
     });
     app.setGlobalPrefix("api/v1");
     const config = new swagger_1.DocumentBuilder()
