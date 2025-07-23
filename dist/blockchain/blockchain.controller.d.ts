@@ -1,4 +1,4 @@
-import { BlockchainService } from "./blockchain.service";
+import { BlockchainService } from './blockchain.service';
 export declare class BlockchainController {
     private blockchainService;
     constructor(blockchainService: BlockchainService);
@@ -10,7 +10,6 @@ export declare class BlockchainController {
     validateTicket(tokenId: string): Promise<boolean>;
     transferTicket(transferData: {
         tokenId: string;
-        fromAddress: string;
         toAddress: string;
     }): Promise<string>;
     getGasEstimate(operation: string): Promise<number>;

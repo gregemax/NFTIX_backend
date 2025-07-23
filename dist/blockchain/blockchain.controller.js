@@ -30,7 +30,7 @@ let BlockchainController = class BlockchainController {
         return this.blockchainService.validateTicketOnChain(tokenId);
     }
     transferTicket(transferData) {
-        return this.blockchainService.transferTicketNFT(transferData.tokenId, transferData.fromAddress, transferData.toAddress);
+        return this.blockchainService.transferTicketNFT(transferData.tokenId, transferData.toAddress);
     }
     getGasEstimate(operation) {
         return this.blockchainService.getGasEstimate(operation);
@@ -38,15 +38,17 @@ let BlockchainController = class BlockchainController {
 };
 exports.BlockchainController = BlockchainController;
 __decorate([
-    (0, common_1.Post)("deploy-contract"),
-    (0, swagger_1.ApiOperation)({ summary: "Deploy event contract to blockchain" }),
+    (0, common_1.Post)('deploy-contract'),
+    (0, swagger_1.ApiOperation)({ summary: 'Deploy event contract to blockchain' }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], BlockchainController.prototype, "deployContract", null);
 __decorate([
-    (0, common_1.Post)("mint-ticket"),
-    (0, swagger_1.ApiOperation)({ summary: "Mint ticket NFT" }),
+    (0, common_1.Post)('mint-ticket'),
+    (0, swagger_1.ApiOperation)({ summary: 'Mint ticket NFT' }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
@@ -60,8 +62,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BlockchainController.prototype, "validateTicket", null);
 __decorate([
-    (0, common_1.Post)("transfer"),
-    (0, swagger_1.ApiOperation)({ summary: "Transfer ticket NFT" }),
+    (0, common_1.Post)('transfer'),
+    (0, swagger_1.ApiOperation)({ summary: 'Transfer ticket NFT' }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
@@ -75,8 +78,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BlockchainController.prototype, "getGasEstimate", null);
 exports.BlockchainController = BlockchainController = __decorate([
-    (0, swagger_1.ApiTags)("blockchain"),
-    (0, common_1.Controller)("blockchain"),
+    (0, swagger_1.ApiTags)('blockchain'),
+    (0, common_1.Controller)('blockchain'),
     __metadata("design:paramtypes", [blockchain_service_1.BlockchainService])
 ], BlockchainController);
 //# sourceMappingURL=blockchain.controller.js.map
