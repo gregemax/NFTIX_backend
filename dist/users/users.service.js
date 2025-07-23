@@ -36,7 +36,10 @@ let UsersService = class UsersService {
     }
     async findByWalletAddress(walletAddress) {
         const user = await this.userModel.findOne({ walletAddress }).exec();
-        return Object.assign({}, { _id: user._id }, user);
+        if (!user) {
+            throw new common_1.NotFoundException(`User with wallet address ${walletAddress} not found`);
+        }
+        return user.toObject();
     }
     async update(id, updateUserDto) {
         const updatedUser = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();

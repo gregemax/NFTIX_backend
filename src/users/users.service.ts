@@ -1,15 +1,16 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import  { Model } from "mongoose"
-import  { User, UserDocument } from "./schemas/user.schema"
-import  { CreateUserDto } from "./dto/create-user.dto"
-import  { UpdateUserDto } from "./dto/update-user.dto"
+import { Model } from "mongoose"
+import { User, UserDocument } from "./schemas/user.schema"
+import { CreateUserDto } from "./dto/create-user.dto"
+import { UpdateUserDto } from "./dto/update-user.dto"
 import { InjectModel } from "@nestjs/mongoose"
 
 @Injectable()
 export class UsersService {
- constructor(
-  @InjectModel('User') private readonly userModel: Model<UserDocument>
-) {}
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<UserDocument>
+  ) {}
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto)
     return createdUser.save()
@@ -28,9 +29,14 @@ export class UsersService {
   }
 
   async findByWalletAddress(walletAddress: string): Promise<User> {
-   const user = await this.userModel.findOne({ walletAddress }).exec()
-   return Object.assign({},{_id:user._id},user)
+    const user = await this.userModel.findOne({ walletAddress }).exec()
+    if (!user) {
+      // Handle case when the user with the given wallet address is not found
+      throw new NotFoundException(`User with wallet address ${walletAddress} not found`)
+    }
 
+    // Return the user object without _id being overwritten
+    return user.toObject() // Mongoose document converted to plain object
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
