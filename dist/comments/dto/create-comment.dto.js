@@ -25,6 +25,14 @@ __decorate([
 ], CreateCommentDto.prototype, "post", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'ID of the user who authored the comment',
+        example: '64dce0a3bcbaff2e18f45fc9'
+    }),
+    (0, class_validator_1.IsMongoId)(),
+    __metadata("design:type", String)
+], CreateCommentDto.prototype, "author", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Content of the comment',
         example: 'This post is very insightful!'
     }),

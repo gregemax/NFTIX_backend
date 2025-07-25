@@ -12,8 +12,8 @@ export class CommentsService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>
   ) {}
 
-  async create(createCommentDto: CreateCommentDto,author): Promise<Comment> {
-    const { post, content } = createCommentDto;
+  async create(createCommentDto: CreateCommentDto): Promise<Comment> {
+    const { post, author, content } = createCommentDto;
 
     if (!Types.ObjectId.isValid(post) || !Types.ObjectId.isValid(author)) {
       throw new BadRequestException('Invalid post or author ID');

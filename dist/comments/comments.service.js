@@ -21,8 +21,8 @@ let CommentsService = class CommentsService {
     constructor(commentModel) {
         this.commentModel = commentModel;
     }
-    async create(createCommentDto, author) {
-        const { post, content } = createCommentDto;
+    async create(createCommentDto) {
+        const { post, author, content } = createCommentDto;
         if (!mongoose_2.Types.ObjectId.isValid(post) || !mongoose_2.Types.ObjectId.isValid(author)) {
             throw new common_1.BadRequestException('Invalid post or author ID');
         }

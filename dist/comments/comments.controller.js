@@ -21,8 +21,8 @@ let CommentsController = class CommentsController {
     constructor(commentsService) {
         this.commentsService = commentsService;
     }
-    create(dto, req) {
-        return this.commentsService.create(dto, req.user?.id);
+    create(dto) {
+        return this.commentsService.create(dto);
     }
     findAll() {
         return this.commentsService.findAll();
@@ -40,11 +40,9 @@ let CommentsController = class CommentsController {
 exports.CommentsController = CommentsController;
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_comment_dto_1.CreateCommentDto, Object]),
+    __metadata("design:paramtypes", [create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", void 0)
 ], CommentsController.prototype, "create", null);
 __decorate([

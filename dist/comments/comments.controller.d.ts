@@ -4,7 +4,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 export declare class CommentsController {
     private readonly commentsService;
     constructor(commentsService: CommentsService);
-    create(dto: CreateCommentDto, req: any): Promise<import("./entities/comment.entity").Comment>;
+    create(dto: CreateCommentDto): Promise<import("./entities/comment.entity").Comment>;
     findAll(): Promise<import("./entities/comment.entity").Comment[]>;
     findOne(id: string): Promise<import("./entities/comment.entity").Comment>;
     update(id: string, dto: UpdateCommentDto): Promise<import("./entities/comment.entity").Comment>;

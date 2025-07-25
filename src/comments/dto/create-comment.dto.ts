@@ -9,12 +9,12 @@ export class CreateCommentDto {
   @IsMongoId()
   post: string;
 
-//   @ApiProperty({
-//     description: 'ID of the user who authored the comment',
-//     example: '64dce0a3bcbaff2e18f45fc9'
-//   })
-//   @IsMongoId()
-//   author: string;
+  @ApiProperty({
+    description: 'ID of the user who authored the comment',
+    example: '64dce0a3bcbaff2e18f45fc9'
+  })
+  @IsMongoId()
+  author: string;
 
   @ApiProperty({
     description: 'Content of the comment',

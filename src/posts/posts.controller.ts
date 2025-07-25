@@ -64,35 +64,34 @@ export class PostsController {
   }
 
   @Post(':id/like')
-  // @UseGuards(AuthGuard) // Uncomment when you have auth implemented
   likePost(
     @Param('id') id: string,
-    @Request() req: any // Replace with proper user type
+    @Request() req: any 
   ) {
-    // For now, using a placeholder user ID - replace with req.user.id when auth is implemented
-    const userId = req.user?.id || '507f1f77bcf86cd799439012'; // Placeholder ObjectId
+   
+    const userId = req.user?.id || '507f1f77bcf86cd799439012'; 
     return this.postsService.likePost(id, userId);
   }
 
   @Delete(':id/like')
-  // @UseGuards(AuthGuard) // Uncomment when you have auth implemented
+
   unlikePost(
     @Param('id') id: string,
-    @Request() req: any // Replace with proper user type
+    @Request() req: any 
   ) {
-    // For now, using a placeholder user ID - replace with req.user.id when auth is implemented
-    const userId = req.user?.id || '507f1f77bcf86cd799439012'; // Placeholder ObjectId
+    
+    const userId = req.user?.id || '507f1f77bcf86cd799439012';
     return this.postsService.unlikePost(id, userId);
   }
 
   @Patch(':id')
-  // @UseGuards(AuthGuard) // Uncomment when you have auth implemented
+  // @UseGuards(AuthGuard) 
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  // @UseGuards(AuthGuard) // Uncomment when you have auth implemented
+  // @UseGuards(AuthGuard) 
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }

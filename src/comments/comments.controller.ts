@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -8,9 +8,8 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Post()
-  @UseGuards()
-  create(@Body() dto: CreateCommentDto , @Request() req: any) {
-    return this.commentsService.create(dto,req.user?.id);
+  create(@Body() dto: CreateCommentDto) {
+    return this.commentsService.create(dto);
   }
 
   @Get()
