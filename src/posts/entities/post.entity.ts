@@ -52,7 +52,7 @@ export class Post {
   @Prop({ default: 0 })
   likeCount: number;
 
-  // Users who liked this post
+
   @Prop({ type: [Types.ObjectId], ref: "User", default: [] })
   likes: Types.ObjectId[];
 
@@ -61,6 +61,10 @@ export class Post {
 
   @Prop()
   publishedAt: Date;
+
+  @Prop({ type: Types.ObjectId, ref: 'Event' })
+  event: Types.ObjectId;
+
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

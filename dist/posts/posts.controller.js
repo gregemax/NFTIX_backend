@@ -17,40 +17,82 @@ const common_1 = require("@nestjs/common");
 const posts_service_1 = require("./posts.service");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const update_post_dto_1 = require("./dto/update-post.dto");
+const post_entity_1 = require("./entities/post.entity");
 let PostsController = class PostsController {
     constructor(postsService) {
         this.postsService = postsService;
     }
-    create(createPostDto) {
-        return this.postsService.create(createPostDto);
+    create(createPostDto, req) {
+        const authorId = req.user?.id;
+        return this.postsService.create(createPostDto, authorId);
     }
-    findAll() {
-        return this.postsService.findAll();
+    findAll(page, limit, status, category) {
+        const pageNum = page ? parseInt(page, 10) : 1;
+        const limitNum = limit ? parseInt(limit, 10) : 10;
+        return this.postsService.findAll(pageNum, limitNum, status, category);
+    }
+    getFeatured(limit) {
+        const limitNum = limit ? parseInt(limit, 10) : 5;
+        return this.postsService.getFeaturedPosts(limitNum);
+    }
+    getPopular(limit) {
+        const limitNum = limit ? parseInt(limit, 10) : 10;
+        return this.postsService.getPopularPosts(limitNum);
     }
     findOne(id) {
-        return this.postsService.findOne(+id);
+        return this.postsService.findOne(id);
+    }
+    getPostLikes(id) {
+        return this.postsService.getPostLikes(id);
+    }
+    likePost(id, req) {
+        const userId = req.user?.id || '507f1f77bcf86cd799439012';
+        return this.postsService.likePost(id, userId);
+    }
+    unlikePost(id, req) {
+        const userId = req.user?.id || '507f1f77bcf86cd799439012';
+        return this.postsService.unlikePost(id, userId);
     }
     update(id, updatePostDto) {
-        return this.postsService.update(+id, updatePostDto);
+        return this.postsService.update(id, updatePostDto);
     }
     remove(id) {
-        return this.postsService.remove(+id);
+        return this.postsService.remove(id);
     }
 };
 exports.PostsController = PostsController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_post_dto_1.CreatePostDto]),
+    __metadata("design:paramtypes", [create_post_dto_1.CreatePostDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Query)('status')),
+    __param(3, (0, common_1.Query)('category')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String, String, String]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('featured'),
+    __param(0, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getFeatured", null);
+__decorate([
+    (0, common_1.Get)('popular'),
+    __param(0, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getPopular", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -58,6 +100,29 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':id/likes'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getPostLikes", null);
+__decorate([
+    (0, common_1.Post)(':id/like'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "likePost", null);
+__decorate([
+    (0, common_1.Delete)(':id/like'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "unlikePost", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -8,15 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsModule = void 0;
 const common_1 = require("@nestjs/common");
+const mongoose_1 = require("@nestjs/mongoose");
 const posts_service_1 = require("./posts.service");
 const posts_controller_1 = require("./posts.controller");
+const post_entity_1 = require("./entities/post.entity");
+const event_schema_1 = require("../events/schemas/event.schema");
+const users_module_1 = require("../users/users.module");
+const user_schema_1 = require("../users/schemas/user.schema");
 let PostsModule = class PostsModule {
 };
 exports.PostsModule = PostsModule;
 exports.PostsModule = PostsModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: post_entity_1.Post.name, schema: post_entity_1.PostSchema }, { name: Event.name, schema: event_schema_1.EventSchema }, { name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
+            users_module_1.UsersModule
+        ],
         controllers: [posts_controller_1.PostsController],
         providers: [posts_service_1.PostsService],
+        exports: [posts_service_1.PostsService]
     })
 ], PostsModule);
 //# sourceMappingURL=posts.module.js.map

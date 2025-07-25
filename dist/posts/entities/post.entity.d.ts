@@ -28,6 +28,7 @@ export declare class Post {
     likes: Types.ObjectId[];
     isFeatured: boolean;
     publishedAt: Date;
+    event: Types.ObjectId;
 }
 export declare const PostSchema: import("mongoose").Schema<Post, import("mongoose").Model<Post, any, any, any, Document<unknown, any, Post, any> & Post & {
     _id: Types.ObjectId;

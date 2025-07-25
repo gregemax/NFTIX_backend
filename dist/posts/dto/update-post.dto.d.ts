@@ -1,5 +1,11 @@
-import { CreatePostDto } from './create-post.dto';
-declare const UpdatePostDto_base: import("@nestjs/common").Type<Partial<CreatePostDto>>;
-export declare class UpdatePostDto extends UpdatePostDto_base {
+import { PostStatus, PostCategory } from '../entities/post.entity';
+export declare class UpdatePostDto {
+    title?: string;
+    content?: string;
+    excerpt?: string;
+    category?: PostCategory;
+    tags?: string[];
+    imageUrl?: string;
+    status?: PostStatus;
+    publishedAt?: Date;
 }
-export {};
