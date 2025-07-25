@@ -8,7 +8,7 @@ class LoginDto {
   walletAddress: string
 
   @IsString()
-  signature?: string // For wallet signature verification
+  signature?: string 
 }
 
 @ApiTags("auth")

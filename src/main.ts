@@ -7,7 +7,7 @@ import 'dotenv/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  // Global validation pipe
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -16,17 +16,17 @@ async function bootstrap() {
     }),
   )
 
-  // Enable CORS for frontend
+  
   app.enableCors({
-    origin: "*", // Allow all origins
+    origin: "*", 
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    credentials: false, // Credentials cannot be used with wildcard origin
+    credentials: false, 
   })
 
-  // API prefix
+  
   app.setGlobalPrefix("api/v1")
 
-  // Swagger documentation
+  
   const config = new DocumentBuilder()
     .setTitle("NFTix API")
     .setDescription("NFT Event Ticketing API Documentation")
