@@ -14,18 +14,18 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
-  // Validate if the organizer is provided and exists
+
   if (!createEventDto.organizer) {
     throw new ForbiddenException('Organizer is required');
   }
 
-  // Check if the user exists
+ 
   const organizer = await this.userModel.findById(createEventDto.organizer).exec();
   if (!organizer) {
     throw new NotFoundException(`Organizer with ID ${createEventDto.organizer} not found`);
   }
 
-  // Create the event
+  
   const createdEvent = new this.eventModel({
     ...createEventDto,
     blockchain: {
@@ -35,7 +35,7 @@ export class EventsService {
 
   const savedEvent = await createdEvent.save();
 
-  // Link the event to the organizer's createdEvents
+ 
   await this.userModel.findByIdAndUpdate(savedEvent.organizer, {
     $push: { createdEvents: savedEvent._id },
   });
@@ -73,7 +73,7 @@ export class EventsService {
       throw new NotFoundException(`Event with ID ${id} not found`)
     }
 
-    // Increment view count
+  
     await this.eventModel.findByIdAndUpdate(id, { $inc: { viewCount: 1 } })
 
     return event

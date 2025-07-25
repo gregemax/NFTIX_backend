@@ -31,12 +31,12 @@ export class UsersService {
   async findByWalletAddress(walletAddress: string): Promise<User> {
     const user = await this.userModel.findOne({ walletAddress }).exec()
     if (!user) {
-      // Handle case when the user with the given wallet address is not found
+     
       throw new NotFoundException(`User with wallet address ${walletAddress} not found`)
     }
 
-    // Return the user object without _id being overwritten
-    return user.toObject() // Mongoose document converted to plain object
+    
+    return user.toObject() 
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {

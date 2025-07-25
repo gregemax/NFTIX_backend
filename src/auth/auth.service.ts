@@ -11,10 +11,9 @@ export class AuthService {
   ) {}
 
   async validateWallet(walletAddress: string): Promise<any> {
-    // In a real implementation, you would verify the wallet signature
+    
     let user = await this.usersService.findByWalletAddress(walletAddress)
     if (!user) {
-      // Create new user if doesn't exist
       user = await this.usersService.create({
         walletAddress
       })
