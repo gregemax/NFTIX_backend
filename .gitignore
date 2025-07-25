@@ -1,8 +1,9 @@
-# dependencies
-/node_modules
-/.env
-/.env.local
-/.env.development.local
-/.env.test.local
-/.env.production.local
-/.env.development       
+# Node modules
+/node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Optional: Ignore specific envs if needed
+# !.env.example   # Uncomment this if you have a template you want to keep in git
