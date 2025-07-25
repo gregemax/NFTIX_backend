@@ -6,6 +6,8 @@ import { UsersModule } from "./users/users.module"
 import { EventsModule } from "./events/events.module"
 import { TicketsModule } from "./tickets/tickets.module"
 import { BlockchainModule } from "./blockchain/blockchain.module"
+import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { BlockchainModule } from "./blockchain/blockchain.module"
     EventsModule,
     TicketsModule,
     BlockchainModule,
+    PostsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

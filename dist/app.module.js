@@ -15,6 +15,8 @@ const users_module_1 = require("./users/users.module");
 const events_module_1 = require("./events/events.module");
 const tickets_module_1 = require("./tickets/tickets.module");
 const blockchain_module_1 = require("./blockchain/blockchain.module");
+const posts_module_1 = require("./posts/posts.module");
+const comments_module_1 = require("./comments/comments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +32,8 @@ exports.AppModule = AppModule = __decorate([
             events_module_1.EventsModule,
             tickets_module_1.TicketsModule,
             blockchain_module_1.BlockchainModule,
+            posts_module_1.PostsModule,
+            comments_module_1.CommentsModule,
         ],
     })
 ], AppModule);

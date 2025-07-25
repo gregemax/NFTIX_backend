@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { type Document, Types } from "mongoose";
-import { User } from '../../users/schemas/user.schema'; // Import User schema
+import { User } from '../../users/schemas/user.schema'; 
 
 export type EventDocument = Event & Document;
 
@@ -26,7 +26,7 @@ export class TicketTier {
   name: string;
 
   @Prop({ required: true })
-  price: number; // Price in SUI
+  price: number;
 
   @Prop()
   description: string;
@@ -43,7 +43,7 @@ export class TicketTier {
   @Prop({ default: true })
   isActive: boolean;
 
-  // Add _id property explicitly if necessary
+
   @Prop({ type: Types.ObjectId })
   _id?: Types.ObjectId;
 }
@@ -111,9 +111,9 @@ export class Event {
   @Prop({ default: 0 })
   viewCount: number;
 
-  // Only declare 'attendees' once here
+  
   @Prop({ type: [Types.ObjectId], ref: "User", default: [] })
-  attendees: Types.ObjectId[]; // Attendees reference
+  attendees: Types.ObjectId[]; 
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
